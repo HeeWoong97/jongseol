@@ -285,7 +285,7 @@
         2. 안전범위의 오른쪽 아래 클릭
         3. 안전범위의 위쪽 부분 클릭
         4. 아무 키를 입력하여 안전범위 설정 종료
-        
+
     3. 모델이 실행된다
         ```
         [Run the model]
@@ -300,13 +300,13 @@
     * 중대병원 앞2
 * 왼쪽 위부터 이화약국, 아크로리버하임, 중대병원 앞1, 중대병원 앞2 순서로 배치했음
 1. 보행자가 횡단보도를 건너는 경우: 빨간불
-![green](https://user-images.githubusercontent.com/53477646/203051228-d59e6d28-0489-4f3a-9751-928f5727ab9a.jpg)
-
-2. 보행자가 안전범위에 있는 경우: 노란불
 ![red](https://user-images.githubusercontent.com/53477646/203051255-27a622c3-dd85-4f5a-9b4e-d6112211b41f.jpg)
 
-3. 보행자가 없거나 안전범위 밖에 있는 경우: 초록불
+2. 보행자가 안전범위에 있는 경우: 노란불
 ![yellow](https://user-images.githubusercontent.com/53477646/203051263-f66303d2-eea9-40e6-baf3-125c0fbf22db.jpg)
+
+3. 보행자가 없거나 안전범위 밖에 있는 경우: 초록불
+![green](https://user-images.githubusercontent.com/53477646/203051228-d59e6d28-0489-4f3a-9751-928f5727ab9a.jpg)
 
 4. 안전범위가 가려지는 경우: 노란불
 ![yellow1](https://user-images.githubusercontent.com/53477646/203051278-9f4a360e-4e5a-47d8-826e-849f9cb5c64f.jpg)
