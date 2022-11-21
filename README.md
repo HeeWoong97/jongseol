@@ -268,13 +268,8 @@
         ```
         $ python yolov5/detect_local.py
         ```
-    2. 신호등 존재 여부 입력
-        ```
-        [Check presence of traffic light]
-        Is there traffic light? [y/n]
-        ```
-        존재할 경우 y, 존재하지 않을 경우 n
-    3. 안전범위 설정
+
+    2. 안전범위 설정
         ```
         [Check the pedestrain safety range]
         Click the left down position
@@ -286,22 +281,35 @@
         Finish... Please press any key...
         safe_x1, safe_y1, safe_x2, safe_y2 =  351 345 1049 345
         ```
-        안전범위의 왼쪽 아래 클릭
-        안전범위의 오른쪽 아래 클릭
-        안전범위의 위쪽 부분 클릭
-        키를 입력하여 안전범위 설정 종료
-    4. 모델이 실행된다
+        1. 안전범위의 왼쪽 아래 클릭
+        2. 안전범위의 오른쪽 아래 클릭
+        3. 안전범위의 위쪽 부분 클릭
+        4. 아무 키를 입력하여 안전범위 설정 종료
+        
+    3. 모델이 실행된다
         ```
         [Run the model]
         31%|█████████████████████████████████████████                                                                                            | 738/2390 [01:51<04:06,  6.70it/s]
         ```
 ***
 ## 실행 결과
-1. 보행자가 없어서 우회전이 가능한 경우에는 초록불로 표시한다.
-<img width="1440" alt="스크린샷 2022-11-09 오후 2 57 01" src="https://user-images.githubusercontent.com/53477646/200751368-0fd2105c-0d43-4e0f-99e3-e6845b38076e.png">
+* 테스트 장소
+    * 이화약국 앞
+    * 아크로리버하임 앞
+    * 중대병원 앞1
+    * 중대병원 앞2
+* 왼쪽 위부터 이화약국, 아크로리버하임, 중대병원 앞1, 중대병원 앞2 순서로 배치했음
+1. 보행자가 횡단보도를 건너는 경우: 빨간불
+![green](https://user-images.githubusercontent.com/53477646/203051228-d59e6d28-0489-4f3a-9751-928f5727ab9a.jpg)
 
-2. 보행자가 안전범위에 있어서 주의가 요한 경우에는 노란불로 표시한다.
-<img width="1440" alt="스크린샷 2022-11-09 오후 2 57 16" src="https://user-images.githubusercontent.com/53477646/200751663-2fd4b7f7-f741-4b28-aeaf-14200abc055b.png">
+2. 보행자가 안전범위에 있는 경우: 노란불
+![red](https://user-images.githubusercontent.com/53477646/203051255-27a622c3-dd85-4f5a-9b4e-d6112211b41f.jpg)
 
-3. 보행자가 횡단보도를 건너고 있어 정지가 필요한 경우에는 빨간불로 표시한다.
-<img width="1440" alt="스크린샷 2022-11-09 오후 3 03 02" src="https://user-images.githubusercontent.com/53477646/200751988-acb124fa-5e7a-4105-8d00-19e7bfe317a1.png">
+3. 보행자가 없거나 안전범위 밖에 있는 경우: 초록불
+![yellow](https://user-images.githubusercontent.com/53477646/203051263-f66303d2-eea9-40e6-baf3-125c0fbf22db.jpg)
+
+4. 안전범위가 가려지는 경우: 노란불
+![yellow1](https://user-images.githubusercontent.com/53477646/203051278-9f4a360e-4e5a-47d8-826e-849f9cb5c64f.jpg)
+
+5. 횡단보도가 가려지는 경우: 노란불
+![yellow2](https://user-images.githubusercontent.com/53477646/203051289-a0d21c9d-c37a-419a-a079-f62e6461d93a.jpg)
