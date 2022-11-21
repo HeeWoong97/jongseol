@@ -185,7 +185,6 @@ H, W, _ = img.shape
 start_row = int(H / 45)
 start_col = int(W / 2) - int(cols / 2)
 
-##############
 # 사각형 겹침 확인
 def is_overlap(rect1, rect2):
 	return not (rect1[2] < rect2[0] or rect1[0] > rect2[2] or rect1[1] > rect2[3] or rect1[3] < rect2[1])
@@ -202,7 +201,6 @@ def overlap_area(rect1, rect2):
 
 	# width, height
 	return overlap_w * overlap_h
-###############
 
 while cap.isOpened():
 	ret, img = cap.read()
@@ -215,8 +213,6 @@ while cap.isOpened():
 
 	preds1 = detect(img, ped_stride, ped_device, ped_model, ped_class_names, [], ped_colors, annotator)
 	preds2 = detect(img, cross_stride, cross_device, cross_model, cross_class_names, ['빨간불', '초록불'], cross_colors, annotator)
-	# annotator.box_label([cross_x1, cross_y1, cross_x2, cross_y2], '횡단보도', color=(255, 0, 255))
-
 	img = annotator.result()
 	result_img = img.copy()
 	cv2.rectangle(result_img, (int(safe_x1), int(safe_y1)), (int(safe_x2), int(safe_y2)), (255, 255, 255), 3)
@@ -231,8 +227,6 @@ while cap.isOpened():
 	if len(cars):
 		for car in cars:
 			car_x1, car_y1, car_x2, car_y2 = car
-
-			############### 수정 알고리즘
 			_cross = [safe_x1, safe_y1, safe_x2, safe_y2]
 			_safe_area = (safe_x2 - safe_x1) * (safe_y2 - safe_y1)
 			if is_overlap(car, _cross):
@@ -241,49 +235,6 @@ while cap.isOpened():
 				if _overlap_area_ratio >= safe_overlap_thres:
 					is_safe_hide = True
 					break
-			################
-
-			# # 자동차가 안전범위를 가로 방향으로 가리는가?
-			# hide_xr = int(safe_x1) <= int(car_x1) <= int(safe_x2)
-			# hide_xl = int(safe_x1) <= int(car_x2) <= int(safe_x2)
-			# hide_xa = int(car_x1) <= int(safe_x1) <= int(safe_x2) <= int(car_x2)
-			# hide_x = hide_xr or hide_xl or hide_xa
-
-			# # 자동차가 안전범위를 세로 방향으로 가리는가?
-			# hide_yd = int(safe_y1) <= int(car_y1) <= int(safe_y2)
-			# hide_yu = int(safe_y1) <= int(car_y2) <= int(safe_y2) 
-			# hide_ya = int(car_y1) <= int(safe_y1) <= int(safe_y2) <= int(car_y2)
-			# hide_y = hide_yd or hide_yu or hide_ya
-
-			# hide_all = hide_xa and hide_ya
-
-			# # 자동차가 안전범위를 완전히 가리는 경우
-			# if hide_all:
-			# 	is_safe_hide = True
-			# 	break
-			# # 자동차가 안전범위를 일부분만 가리는 경우
-			# elif hide_x and hide_y:
-			# 	if hide_xr:
-			# 		W = safe_x2 - car_x1
-			# 	elif hide_xl:
-			# 		W = car_x2 - safe_x1
-			# 	elif hide_xa:
-			# 		W = safe_x2 - safe_x1
-
-			# 	if hide_yd:
-			# 		H = safe_y2 - car_y1
-			# 	elif hide_yu:
-			# 		H = car_y2 - safe_y1
-			# 	elif hide_ya:
-			# 		H = safe_y2 - safe_y1
-				
-			# 	safe_area = (safe_x2 - safe_x1) * (safe_y2 - safe_y1)
-			# 	overlap_area = W * H
-			# 	overlap_ratio = overlap_area / safe_area
-			# 	# 자동차가 안전범위를 가린 비율이 safe_overlap_thres를 넘어서는 경우
-			# 	if overlap_ratio >= safe_overlap_thres:
-			# 		is_safe_hide = True
-			# 		break
 
 	# 횡단보도가 가려지는지 check
 	is_cross_hide = False

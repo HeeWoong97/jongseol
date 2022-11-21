@@ -24,7 +24,14 @@
         * data/cross/dataset1
         * data/cross/dataset2
 * 데이터의 용량이 너무 커서 github에 업로드 하지 못했습니다
-* 이후에 google drive의 링크를 공유하는 등의 방법을 통해 원활한 테스트가 진행될 수 있도록 하겠습니다
+* Google Drive 링크
+    * https://drive.google.com/drive/folders/1-kA-24ls4H_zT9m31wy0f8EVAqB3xAbM?usp=share_link
+***
+## 학습 weight
+* 차량, 보행자 모델
+    * yolov5/runs/train/exp/weights/best.pt
+* 횡단보도, 신호등 모델
+    * yolov5/runs/train/exp3/weights/best.pt
 ***
 ## 코드의 구조
 * yolov5/
