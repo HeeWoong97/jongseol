@@ -1,22 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
-from google.colab import drive
-drive.mount('/content/drive')
-
-
-# In[2]:
-
-
-get_ipython().run_line_magic('cd', '"/content/drive/MyDrive/Colab Notebooks/yolov5"')
-
-
-# In[3]:
-
-
 import torch
 import numpy as np
 import cv2
@@ -25,14 +6,10 @@ from utils.general import non_max_suppression, scale_coords
 from utils.plots import Annotator
 from tqdm import tqdm
 
+PED_MODEL_PATH = '../../../yolov5/runs/train/exp/weights/best.pt'
+CROSS_MODEL_PATH = '../../../yolov5/runs/train/exp3/weights/best.pt'
 
-# In[4]:
-
-
-PED_MODEL_PATH = '/content/drive/MyDrive/Colab Notebooks/yolov5/runs/train/exp72/weights/best.pt'
-CROSS_MODEL_PATH = '/content/drive/MyDrive/Colab Notebooks/yolov5/runs/train/exp70/weights/best.pt'
-
-TEST_VIDEO_PATH = '/content/drive/MyDrive/Colab Notebooks/test-video/'
+TEST_VIDEO_PATH = '../../../test-video/'
 TEST_VIDEO_SAVE_PATH = TEST_VIDEO_PATH + 'output/'
 
 img_size = 640
@@ -42,10 +19,6 @@ max_det = 1000
 classes = None
 agnostic_nms = False
 
-
-# In[5]:
-
-
 ped_device = torch.device('cpu')
 print(ped_device)
 ped_ckpt = torch.load(PED_MODEL_PATH, map_location = ped_device)
@@ -53,10 +26,6 @@ ped_model = ped_ckpt['ema' if ped_ckpt.get('cma') else 'model'].float().fuse().e
 ped_class_names = ['보행자', '차량']
 ped_stride = int(ped_model.stride.max())
 ped_colors = ((50, 50, 50), (255, 0, 0))
-
-
-# In[6]:
-
 
 cross_device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 print(cross_device)
@@ -66,19 +35,11 @@ cross_class_names = ['횡단보도', '빨간불', '초록불']
 cross_stride = int(cross_model.stride.max())
 cross_colors = ((255, 0, 255), (0, 0, 255), (0, 255, 0))
 
-
-# In[7]:
-
-
 cap = cv2.VideoCapture(TEST_VIDEO_PATH + 'ewha.mp4')
 
 fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
 out = cv2.VideoWriter(TEST_VIDEO_SAVE_PATH + 'output21.mp4', fourcc, cap.get(cv2.CAP_PROP_FPS), (int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))))
 frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-
-
-# In[8]:
-
 
 def detect(annotator, img, stride, device, model, class_names, colors):
     H, W, _ = img.shape
@@ -105,10 +66,6 @@ def detect(annotator, img, stride, device, model, class_names, colors):
 
         annotator.box_label([x1, y1, x2, y2], '%s %d' % (class_name, float(p[4]) * 100), color=colors[int(p[5])])
 
-
-# In[9]:
-
-
 cur_frame = 1
 pbar = tqdm(total=frames)
 
@@ -130,16 +87,5 @@ while cap.isOpened():
     if cv2.waitKey(1) == ord('q'):
         break
 
-
-# In[10]:
-
-
 cap.release()
 out.release()
-
-
-# In[ ]:
-
-
-
-

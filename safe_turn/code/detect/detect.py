@@ -1,22 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
-from google.colab import drive
-drive.mount('/content/drive')
-
-
-# In[2]:
-
-
-get_ipython().run_line_magic('cd', '"/content/drive/MyDrive/Colab Notebooks/yolov5"')
-
-
-# In[3]:
-
-
 import torch
 import numpy as np
 import cv2
@@ -26,14 +7,10 @@ from utils.plots import Annotator
 from tqdm import tqdm
 from google.colab.patches import cv2_imshow
 
+PED_MODEL_PATH = '../../../yolov5/runs/train/exp/weights/best.pt'
+CROSS_MODEL_PATH = '../../../yolov5/runs/train/exp3/weights/best.pt'
 
-# In[4]:
-
-
-PED_MODEL_PATH = '/content/drive/MyDrive/Colab Notebooks/yolov5/runs/train/exp72/weights/best.pt'
-CROSS_MODEL_PATH = '/content/drive/MyDrive/Colab Notebooks/yolov5/runs/train/exp70/weights/best.pt'
-
-TEST_VIDEO_PATH = '/content/drive/MyDrive/Colab Notebooks/test-video/'
+TEST_VIDEO_PATH = '../../../test-video/'
 TEST_VIDEO_SAVE_PATH = TEST_VIDEO_PATH + 'output/'
 
 img_size = 640
@@ -43,10 +20,6 @@ max_det = 1000
 classes = None
 agnostic_nms = False
 
-
-# In[5]:
-
-
 ped_device = torch.device('cpu')
 print(ped_device)
 ped_ckpt = torch.load(PED_MODEL_PATH, map_location = ped_device)
@@ -54,10 +27,6 @@ ped_model = ped_ckpt['ema' if ped_ckpt.get('cma') else 'model'].float().fuse().e
 ped_class_names = ['보행자', '차량']
 ped_stride = int(ped_model.stride.max())
 ped_colors = ((50, 50, 50), (255, 0, 0))
-
-
-# In[6]:
-
 
 cross_device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 print(cross_device)
@@ -67,10 +36,6 @@ cross_class_names = ['횡단보도', '빨간불', '초록불']
 cross_stride = int(cross_model.stride.max())
 cross_colors = ((255, 0, 255), (0, 0, 255), (0, 255, 0))
 
-
-# In[18]:
-
-
 cap = cv2.VideoCapture(TEST_VIDEO_PATH + 'acro1.mp4')
 
 fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
@@ -78,10 +43,6 @@ out = cv2.VideoWriter(TEST_VIDEO_SAVE_PATH + 'output30.mp4', fourcc, cap.get(cv2
 frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
 cx1, cy1, cx2, cy2 = 0, 0, 0, 0
-
-
-# In[8]:
-
 
 def detect(img, stride, device, model, class_names, colors, annotator):
     global cx1, cy1, cx2, cy2
@@ -114,44 +75,6 @@ def detect(img, stride, device, model, class_names, colors, annotator):
         annotator.box_label([x1, y1, x2, y2], '%s %d' % (class_name, float(p[4]) * 100), color=colors[int(p[5])])
     
     return peds
-
-
-# In[9]:
-
-
-# ret, img = cap.read()
-
-# cx1, cy1, cx2, cy2 = 0, 0, 0, 0
-
-# H, W, _ = img.shape
-
-# img_input = letterbox(img, img_size, stride = cross_stride)[0]
-# img_input = img_input.transpose((2, 0, 1))[::-1]
-# img_input = np.ascontiguousarray(img_input)
-# img_input = torch.from_numpy(img_input).to(cross_device)
-# img_input = img_input.float()
-# img_input /= 255.
-# img_input = img_input.unsqueeze(0)
-
-# pred = cross_model(img_input, augment = False, visualize = False)[0]
-# pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det = max_det)[0]
-# pred = pred.cpu().numpy()
-
-# pred[:, :4] = scale_coords(img_input.shape[2:], pred[:, :4], img.shape).round()
-
-# for p in pred:
-#   class_name = cross_class_names[int(p[5])]
-#   print(class_name)
-#   print(p[:4])
-
-#   if class_name == '횡단보도':
-#     cx1, cy1, cx2, cy2 = p[:4]
-  
-# print(cx1, cy1, cx2, cy2, sep=', ')
-
-
-# In[19]:
-
 
 safe_x1, safe_y1 = 780, 536
 safe_x2, safe_y2 = 1130, 536
@@ -188,16 +111,5 @@ while cap.isOpened():
   if cv2.waitKey(1) == ord('q'):
     break
 
-
-# In[20]:
-
-
 cap.release()
 out.release()
-
-
-# In[ ]:
-
-
-
-

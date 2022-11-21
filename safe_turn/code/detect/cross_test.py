@@ -1,16 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
-from google.colab import drive
-drive.mount('/content/drive')
-
-
-# In[11]:
-
-
 import numpy as np
 import cv2
 import math
@@ -23,22 +10,8 @@ from sklearn import linear_model, datasets
 import os
 from tqdm import tqdm
 
-
-# In[3]:
-
-
-TEST_VIDEO_PATH = '/content/drive/MyDrive/Colab Notebooks/test-video/'
+TEST_VIDEO_PATH = '../../../test-video/'
 TEST_VIDEO_SAVE_PATH = TEST_VIDEO_PATH + 'output/'
-
-
-# In[9]:
-
-
-get_ipython().run_line_magic('cd', '"/content/drive/MyDrive/Colab Notebooks/test-video"')
-
-
-# In[4]:
-
 
 #get a line from a point and unit vectors
 def lineCalc(vx, vy, x0, y0):
@@ -48,10 +21,6 @@ def lineCalc(vx, vy, x0, y0):
     m = (y1-y0)/(x1-x0)
     b = y1-m*x1
     return m,b
-
-
-# In[5]:
-
 
 #the angle at the vanishing point
 def angle(pt1, pt2):
@@ -64,10 +33,6 @@ def angle(pt1, pt2):
     print(len2)
     a=math.acos(inner_product/(len1*len2))
     return a*180/math.pi 
-
-
-# In[6]:
-
 
 #vanishing point - cramer's rule
 def lineIntersect(m1,b1, m2,b2) : 
@@ -89,10 +54,6 @@ def lineIntersect(m1,b1, m2,b2) :
     intersectionX = dx/d
     intersectionY = dy/d
     return intersectionX,
-
-
-# In[7]:
-
 
 #process a frame
 def process(im):
@@ -231,10 +192,6 @@ def process(im):
     print('DELTA (x,y from POV):' + str(Dx) + ',' + str(Dy))
     return im,Dx,Dy
 
-
-# In[15]:
-
-
 #initialization
 cap = cv2.VideoCapture('acro.mp4') #load a video
 frames=int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -332,16 +289,5 @@ while(cap.isOpened()):
     if cv2.waitKey(1) & 0xFF == ord('q') or cv2.waitKey(1) & 0xFF == ord('Q'):
         break
 
-
-# In[16]:
-
-
 out.release()
 cap.release()
-
-
-# In[ ]:
-
-
-
-
