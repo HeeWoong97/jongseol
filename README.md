@@ -68,25 +68,32 @@
 
                     if class_name not in ignore_class_names:
                         preds[class_name].append(position)
-                    if annotator is not None:
-                        annotator.box_label(position, '%s %d' % (class_name, float(p[4]) * 100), color=colors[int(p[5])])
+                        if annotator is not None:
+                            annotator.box_label(position, '%s %d' % (class_name, float(p[4]) * 100), color=colors[int(p[5])])
 
                 return preds
             ```
-            * model에 이미지를 넣고 인식
+            * detect 메인 알고리즘
             ``` python
             def detect(img, stride, device, model, class_names, ignore_class_names, colors, annotator=None):
-                global cx1, cy1, cx2, cy2
-
+                global cross_x1, cross_y1, cross_x2, cross_y2
+                
                 img_input = img_process(img, stride, device)
-
+                
                 pred = model(img_input, augment = False, visualize = False)[0]
-                pred = non_max_suppression(pred, conf_thres, iou_thres, classes, agnostic_nms, max_det = max_det)[0]
+                
+                if '보행자' in class_names:
+                    pred = non_max_suppression(pred, ped_conf_thres, iou_thres, classes, agnostic_nms, max_det = max_det)[0]
+                elif '횡단보도' in class_names:
+                    pred = non_max_suppression(pred, cross_conf_thres, iou_thres, classes, agnostic_nms, max_det = max_det)[0]
+                else:
+                    raise Exception('Model doesn\'t exist')
                 pred = pred.cpu().numpy()
-
+                
                 pred[:, :4] = scale_coords(img_input.shape[2:], pred[:, :4], img.shape).round()
+                
                 preds = pred_classes(pred, class_names, ignore_class_names, annotator, colors)
-
+                
                 return preds
             ```
         * **안전범위 설정 관련 코드**
@@ -123,35 +130,74 @@
                     isClick = False
             ```
         * **안전범위를 통한 메인 알고리즘**
-            ```python
-            # safety 체크 알고리즘
-            in_safety, in_cross = False, False
+        * bounding box끼리 겹치는지 확인
+            ``` python
+            # 사각형 겹침 확인
+            def is_overlap(rect1, rect2):
+                return not (rect1[2] < rect2[0] or rect1[0] > rect2[2] or rect1[1] > rect2[3] or rect1[3] < rect2[1])
 
+            # 사각형 겹치는 영역 크기
+            def overlap_area(rect1, rect2):
+                assert len(rect1) == 4 and len(rect2) == 4
+                x_poses = [rect1[0], rect1[2], rect2[0], rect2[2]]
+                y_poses = [rect1[1], rect1[3], rect2[1], rect2[3]]
+                x_poses.sort()
+                y_poses.sort()
+
+                overlap_w, overlap_h = x_poses[2] - x_poses[1], y_poses[2] - y_poses[1]
+
+                # width, height
+                return overlap_w * overlap_h
+            ```
+        * 자동차가 안전범위를 가리는지 확인
+            ``` python
+            is_safe_hide = False
+            if len(cars):
+                for car in cars:
+                    car_x1, car_y1, car_x2, car_y2 = car
+                    _cross = [safe_x1, safe_y1, safe_x2, safe_y2]
+                    _safe_area = (safe_x2 - safe_x1) * (safe_y2 - safe_y1)
+                    if is_overlap(car, _cross):
+                        _overlap_area = overlap_area(car, _cross)
+                        _overlap_area_ratio = _overlap_area / _safe_area
+                        if _overlap_area_ratio >= safe_overlap_thres:
+                            is_safe_hide = True
+                            break
+            ```
+        * 자동차가 횡단보도를 가리는지 확인
+            ``` python
+            is_cross_hide = False
+            init_cross_H = cross_y2 - cross_y1
+            if len(crosses):
+                cur_cross_x1, cur_cross_y1, cur_cross_x2, cur_cross_y2 = crosses[0]
+                cur_cross_H = cur_cross_y2 - cur_cross_y1
+                overlap_ratio = cur_cross_H / init_cross_H
+                if overlap_ratio <= cross_overlap_thres:
+                    is_cross_hide = True
+            else:
+                is_cross_hide = True
+            ```
+        * 운전자에게 안내하는 메인 부분
+            ``` python
+            in_safety, in_cross = False, False		
+            is_hide = is_safe_hide or is_cross_hide	
             if len(peds):
                 for ped in peds:
-                px1, py1, px2, py2 = ped
+                    ped_x1, ped_y1, ped_x2, ped_y2 = ped
 
-                _in_safety = int(safe_y1) <= int(py2) <= int(cy1) and int(safe_x1) <= int(px1) and int(px2) <= int(safe_x2)
-                _in_cross = int(cy1) <= int(py2) <= int(cx2) and int(cx1) <= int(px1) and int(px2) <= int(cx2)
-                in_safety, in_cross = in_safety or _in_safety, in_cross or _in_cross
+                    _in_safety = int(safe_y1) <= int(ped_y2) <= int(safe_y2) and int(safe_x1) <= int(ped_x1) and int(ped_x2) <= int(safe_x2)
+                    _in_cross = int(cross_y1) <= int(ped_y2) <= int(cross_y2) and int(cross_x1) <= int(ped_x1) and int(ped_x2) <= int(cross_x2)
+                    in_safety, in_cross = in_safety or _in_safety, in_cross or _in_cross
 
-                # red : stop!; yellow : stop and go; green : drive slowly
-                if in_cross:
-                result_img[start_row:start_row+rows, start_col:start_col+cols] = red
-                elif in_safety:
-                if cross_light_color == None:
-                    result_img[start_row:start_row+rows, start_col:start_col+cols] = red
-                elif cross_light_color == '초록불':
-                    result_img[start_row:start_row+rows, start_col:start_col+cols] = red
-                else:
-                    result_img[start_row:start_row+rows, start_col:start_col+cols] = yellow
-                else:   
-                if cross_light_color == None:
-                    result_img[start_row:start_row+rows, start_col:start_col+cols] = yellow
-                elif cross_light_color == '초록불':
-                    result_img[start_row:start_row+rows, start_col:start_col+cols] = yellow
-                else:
-                    result_img[start_row:start_row+rows, start_col:start_col+cols] = green
+                    # red : stop!; yellow : stop and go; green : drive slowly
+                    if in_cross:
+                        result_img[start_row:start_row+rows, start_col:start_col+cols] = red
+                    elif is_hide or in_safety:
+                        result_img[start_row:start_row+rows, start_col:start_col+cols] = yellow
+                    else:
+                        result_img[start_row:start_row+rows, start_col:start_col+cols] = green
+            elif is_hide:
+                result_img[start_row:start_row+rows, start_col:start_col+cols] = yellow
             else:
                 # no ped
                 result_img[start_row:start_row+rows, start_col:start_col+cols] = green
