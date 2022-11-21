@@ -1,16 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
-from google.colab import drive
-drive.mount('/content/drive')
-
-
-# In[2]:
-
-
 import os
 from glob import glob
 import json
@@ -18,67 +5,29 @@ from shutil import copy2, move
 from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 
-
-# In[3]:
-
-
 class_names = ['Zebra_Cross', 'R_Signal', 'G_Signal']
 
-
-# In[4]:
-
-
-ORIGIN_PATH = "/content/drive/MyDrive/Colab Notebooks/data/cross/origin/"
-DATA_PATH = "/content/drive/MyDrive/Colab Notebooks/data/cross/dataset/"
-
-
-# In[13]:
-
+ORIGIN_PATH = "../../../data/cross/origin/"
+DATA_PATH = "../../../data/cross/dataset/"
 
 jpg_list = glob(os.path.join(ORIGIN_PATH, '*', '*', '*.jpg'))
-
 len(jpg_list)
 
-
-# In[14]:
-
-
 png_list = glob(os.path.join(ORIGIN_PATH, '*', '*', '*.png'))
-
 len(png_list)
 
-
-# In[19]:
-
-
 img_list = jpg_list + png_list
-
 len(img_list)
-img_list
-
-
-# In[14]:
-
 
 os.makedirs(os.path.join(DATA_PATH, 'train', 'images'), exist_ok=True)
 os.makedirs(os.path.join(DATA_PATH, 'train', 'labels'), exist_ok=True)
 os.makedirs(os.path.join(DATA_PATH, 'valid', 'images'), exist_ok=True)
 os.makedirs(os.path.join(DATA_PATH, 'valid', 'labels'), exist_ok=True)
 
-
-# In[ ]:
-
-
 train_img_list, val_img_list = train_test_split(img_list, test_size=0.4, random_state=2022)
-
 len(train_img_list), len(val_img_list)
 
-
-# In[21]:
-
-
 file_list = []
-
 for img_path in tqdm(img_list):
     json_path = img_path.replace('.jpg', '.json') if img_path.find('.jpg') is not -1 else img_path.replace('.png', '.json')
     # json_path = img_path.replace('.jpg', '.json')
@@ -125,15 +74,10 @@ with open(os.path.join(DATA_PATH, 'train.txt'), 'w', encoding='utf-8') as f:
         
 print(len(file_list))
 
-
-# In[ ]:
-
-
 file_list = []
 
 for img_path in tqdm(val_img_list):
     json_path = img_path.replace('.jpg', '.json') if img_path.find('.jpg') is not -1 else img_path.replace('.png', '.json')
-    # json_path = img_path.replace('.jpg', '.json')
 
     try:
       with open(json_path, 'r') as f:
@@ -175,10 +119,3 @@ with open(os.path.join(DATA_PATH, 'valid.txt'), 'w', encoding='utf-8') as f:
     f.write('\n'.join(file_list) + '\n')
         
 print(len(file_list))
-
-
-# In[ ]:
-
-
-
-

@@ -1,36 +1,12 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
-from google.colab import drive
-drive.mount('/content/drive')
-
-
-# In[2]:
-
-
 import os
 from glob import glob
 import json
 from tqdm import tqdm
 
-
-# In[3]:
-
-
-data_path = "/content/drive/MyDrive/Colab Notebooks/data/car_pedestrain/dataset"
-colab_data_path = "/content/drive/MyDrive/Colab Notebooks/data/car_pedestrain/dataset"
-# data_path = "./dataset"
+data_path = "../../../data/car_pedestrain/dataset"
 img_list = glob(os.path.join(data_path, "valid", "images", "*.png"))
 file_list = []
-
 print(len(img_list))
-
-
-# In[4]:
-
 
 for img_path in tqdm(img_list):
     json_path = img_path.replace(".png", ".json")
@@ -64,22 +40,11 @@ for img_path in tqdm(img_list):
         with open(os.path.join(data_path, "valid", "labels", os.path.basename(json_path).replace(".json", ".txt")), "w") as f:
             f.write(txt)
         
-        file_list.append(os.path.join(colab_data_path, "valid", "images", os.path.basename(img_path)))
+        file_list.append(os.path.join(data_path, "valid", "images", os.path.basename(img_path)))
     except Exception as e:
         print(e, img_path)
-
-
-# In[5]:
-
 
 with open(os.path.join(data_path, "valid.txt"), "w", encoding="utf-8") as f:
     f.write("\n".join(file_list) + "\n")
 
 print(len(file_list))
-
-
-# In[ ]:
-
-
-
-
