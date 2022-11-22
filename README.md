@@ -16,8 +16,8 @@
 * 보행자, 차 (AIHub 차량 및 사람 인지 영상 데이터셋) - 26000장
     * https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=realm&dataSetSn=195
     * 13000장씩 나누어서 저장
-        * data/car_pedestrain/dataset1
-        * data/car_pedestrain/dataset2
+        * data/car_pedestrian/dataset1
+        * data/car_pedestrian/dataset2
 * 횡단보도, 신호등 (SelectStar 교차로 및 화폐 정보 데이터셋 데이터셋) - 35000장
     * https://open.selectstar.ai/data-set/wesee
     * 17500장씩 나누어서 저장
@@ -221,9 +221,9 @@
                 * 입력 영상에서 횡단보도 인식을 통해 보행자, 차량에게 안전 정보를 알려주는 코드
         * train/
             * 모델을 학습하는 코드
-            * car_pedestrain/, cross/ 폴더로 나뉘어 각각 알맞는 데이터셋을 학습함
+            * car_pedestrian/, cross/ 폴더로 나뉘어 각각 알맞는 데이터셋을 학습함
             * 주요 코드
-                * car_pedestrain/
+                * car_pedestrian/
                     * 차량, 보행자 인식 모델 관련
                     * YOLO_train.py
                         * yolo 모델을 이용하여 모델을 학습하는 코드
@@ -257,21 +257,24 @@
 * 모델 학습 방법
     * 차량, 보행자 모델 학습
         ```
-        $ python safe_turn/code/train/car_pedestrain/YOLO_train.py
+        $ cd safe_turn/code/train/car_pedestrian
+        $ python YOLO_train.py
         ```
     * 횡단보도, 신호등 모델 학습
         ```
-        $ python safe_turn/code/train/cross/YOLO_train.py
+        $ cd safe_turn/code/train/cross
+        $ python YOLO_train.py
         ```
 * 모델 실행 방법
     1. 코드 실행
         ```
-        $ python yolov5/detect_local.py
+        $ cd yolov5
+        $ python detect_local.py
         ```
 
     2. 안전범위 설정
         ```
-        [Check the pedestrain safety range]
+        [Check the pedestrian safety range]
         Click the left down position
         351   407
         Click the right down position
