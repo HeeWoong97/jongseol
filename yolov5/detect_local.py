@@ -255,8 +255,8 @@ while cap.isOpened():
 		for ped in peds:
 			ped_x1, ped_y1, ped_x2, ped_y2 = ped
 
-			_in_safety = int(safe_y1) <= int(ped_y2) <= int(safe_y2) and int(safe_x1) <= int(ped_x1) and int(ped_x2) <= int(safe_x2)
-			_in_cross = int(cross_y1) <= int(ped_y2) <= int(cross_y2) and int(cross_x1) <= int(ped_x1) and int(ped_x2) <= int(cross_x2)
+			_in_safety = is_overlap([safe_x1, safe_y1, safe_x2, safe_y2], [ped_x1, ped_y2, ped_x2, ped_y2])
+			_in_cross = is_overlap([cross_x1, cross_y1, cross_x2, cross_y2], [ped_x1, ped_y2, ped_x2, ped_y2])
 			in_safety, in_cross = in_safety or _in_safety, in_cross or _in_cross
 
 			# red : stop!; yellow : stop and go; green : drive slowly
