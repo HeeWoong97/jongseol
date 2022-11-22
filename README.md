@@ -113,7 +113,7 @@
                     elif cnt == 2:
                         print('Click the upper position')
                     elif cnt == 3:
-                        print('Finish... Please press the \'0\'')
+                        print('Finish... Please press any key')
                         isFinish = True
                         return
                     isClick = True
