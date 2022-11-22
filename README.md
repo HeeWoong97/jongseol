@@ -282,7 +282,6 @@
         Click the upper position
         541   345
         Finish... Please press any key...
-        safe_x1, safe_y1, safe_x2, safe_y2 =  351 345 1049 345
         ```
         1. 안전범위의 왼쪽 아래 클릭
         2. 안전범위의 오른쪽 아래 클릭

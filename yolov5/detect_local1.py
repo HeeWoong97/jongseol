@@ -50,7 +50,7 @@ cross_device = torch.device('cpu')
 print(cross_device)
 cross_ckpt = torch.load(CROSS_MODEL_PATH, map_location = cross_device)
 cross_model = cross_ckpt['ema' if cross_ckpt.get('cma') else 'model'].float().fuse().eval()
-cross_class_names = ['횡단보도', '빨간불', '초록불']
+cross_class_names = ['횡단보도', '초록불', '빨간불']
 cross_stride = int(cross_model.stride.max())
 cross_colors = ((255, 0, 255), (0, 0, 255), (0, 255, 0))
 print()

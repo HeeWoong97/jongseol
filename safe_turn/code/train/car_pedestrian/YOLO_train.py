@@ -31,6 +31,6 @@ print("valid txt2: ", len(valid_txt_list2))
 os.system('pip install -U -r requirements.txt')
 
 import torch
-
+os.chdir('../../../yolov5')
 print('torch %s %s' % (torch.__version__, torch.cuda.get_device_properties(0) if torch.cuda.is_available() else 'CPU'))
 os.system('python train.py --img 640 --batch 16 --epochs 30 --data car_pedestrain_data.yaml --weights yolov5s.pt --cache')
