@@ -18,11 +18,7 @@ TEST_VIDEO_PATH = '../test-video/'
 TEST_VIDEO_SAVE_PATH = TEST_VIDEO_PATH + 'output/'
 CURRENT_TIME = f'{current_time.year}-{current_time.month}-{current_time.day} {current_time.hour}:{current_time.minute}:{current_time.second}'
 
-<<<<<<< HEAD
-TEST_VIDEO = 'ewha4.mp4'
-=======
 TEST_VIDEO = 'acro2.mp4'
->>>>>>> c8901040dbfff62e62e19dbfe8533315ed066d4c
 SAVE_VIDEO = CURRENT_TIME + '.mp4'
 
 #%%
