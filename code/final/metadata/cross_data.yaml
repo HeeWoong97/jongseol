@@ -8,11 +8,13 @@
 
 
 # Train/val/test sets as 1) dir: path/to/imgs, 2) file: path/to/imgs.txt, or 3) list: [path/to/imgs1, path/to/imgs2, ..]
-path: ../..//data/cross  # dataset root dir
+path: ../../data/cross  # dataset root dir
 train: 
-- dataset/train/images  # train images (relative to 'path') 128 images
+- dataset1/train/images  # train images (relative to 'path') 128 images
+- dataset2/train/images
 val: 
-- dataset/valid/images  # val images (relative to 'path') 128 images
+- dataset1/valid/images  # val images (relative to 'path') 128 images
+- dataset2/valid/images
 test:  # test images (optional)
 
 nc: 3
