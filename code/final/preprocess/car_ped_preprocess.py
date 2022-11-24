@@ -7,8 +7,8 @@ from sklearn.model_selection import train_test_split
 
 class_names = ['Car', 'Pedestrian']
 
-ORIGIN_PATH = "../../../data/car_pedestrian/origin/"
-OUTPUT_PATH = "../../../data/car_pedestrian/dataset/"
+ORIGIN_PATH = "../../data/car_pedestrian/origin/"
+OUTPUT_PATH = "../../data/car_pedestrian/dataset/"
 
 jpg_list = glob(os.path.join(ORIGIN_PATH, '*', '*', '*.jpg'))
 png_list = glob(os.path.join(ORIGIN_PATH, '*', '*', '*.png'))
