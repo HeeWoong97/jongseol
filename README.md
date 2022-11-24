@@ -210,6 +210,9 @@
                     # no ped
                     result_img[start_row:start_row+rows, start_col:start_col+cols] = green
                 ```
+        * detect_cross.py
+            * 영상처리로서 횡단보도 인식을 시도했던 코드
+            * HSV, dilate, canny, houghlinesp의 방법을 사용
         * preprocess/
             * 데이터를 전처리 하는 코드
             * car_ped_preprocess.py
