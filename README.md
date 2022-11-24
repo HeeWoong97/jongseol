@@ -221,6 +221,11 @@
             * cross_preprocess.py
                 * 횡단보도, 신호등 데이터셋을 train, valid로 나눔
                 * YOLO에서 인식하는 labeling 형식으로 변환
+            * car_ped_split.py
+                * 차량, 보행자 데이터셋을 dataset1, dataset2로 나눔
+                * 모든 데이터를 한번에 메모리에 캐싱할 수 없어서 2개의 부분으로 나누었습니다.
+            * cross_split.py
+                * 횡단보도, 신호등 데이터셋을 dataset1, dataset2로 나눔
         * train/
             * 모델을 학습하는 코드
             * car_ped_train.py
@@ -239,16 +244,43 @@
 ***
 ## 실행 방법
 * 모델 학습 방법
-    * 차량, 보행자 모델 학습
-        ```
-        $ cd code/final/train
-        $ python car_ped_train.py
-        ```
-    * 횡단보도, 신호등 모델 학습
-        ```
-        $ cd code/final/train
-        $ python cross_train.py
-        ```
+    1. AI-HUB, 셀렉트스타에서 데이터셋을 직접 다운받을 경우
+        1. code 폴더 내에 data 폴더를 만든다.
+            ```
+            $ mkdir code/data
+            ```
+        2. data 폴더 내에 car_pedestrian, cross 폴더를 만든다.
+            ```
+            $ mkdir code/data/car_pedestrian
+            $ mkdir code/data/cross
+            ```
+        3. 각 폴더에 데이터를 다운받는다.
+        4. 각 데이터셋에 대해 YOLO 형식으로 labeling을 변환한다.
+            ```
+            $ cd code/final/preprocess
+            $ python car_ped_preprocess.py
+            $ python cross_preproces.py
+            ```
+        5. 변환된 데이터셋을 dataset1, dataset2로 나눈다.
+            ```
+            $ python car_ped_split.py
+            $ python cross_split.py
+            ```
+    2. 구글 드라이브에서 데이터셋을 직접 다운받을 경우
+        1. 구글 드라이브에 접속한다.
+            * https://drive.google.com/drive/folders/1-kA-24ls4H_zT9m31wy0f8EVAqB3xAbM?usp=share_link
+        2. 파일을 code 폴더에 다운받는다.
+    3. 이후 공통사항
+        * 차량, 보행자 모델 학습
+            ```
+            $ cd code/final/train
+            $ python car_ped_train.py
+            ```
+        * 횡단보도, 신호등 모델 학습
+            ```
+            $ cd code/final/train
+            $ python cross_train.py
+            ```
 * 모델 실행 방법
     1. 분석할 영상을 code/final/video/target에 넣는다
 
