@@ -12,3 +12,4 @@ test-video/
 submit/
 
 detect_crosswalk/
+.DS_Store
