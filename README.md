@@ -275,7 +275,10 @@
     2. 구글 드라이브에서 데이터셋을 직접 다운받을 경우
         1. 구글 드라이브에 접속한다.
             * https://drive.google.com/drive/folders/1-kA-24ls4H_zT9m31wy0f8EVAqB3xAbM?usp=share_link
-        2. 파일을 code 폴더에 다운받는다.
+        2. data 폴더를 code 폴더에 다운받는다. 
+            * 예상되는 폴더 구조
+            * code/data/car_pedestrian/
+            * code/data/cross/
     3. 이후 공통사항
         * 차량, 보행자 모델 학습
             ```
