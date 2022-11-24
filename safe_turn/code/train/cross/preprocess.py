@@ -1,7 +1,7 @@
 import os
 from glob import glob
 import json
-from shutil import copy2, move
+from shutil import move
 from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 

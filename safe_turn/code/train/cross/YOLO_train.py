@@ -28,9 +28,9 @@ print("valid img2: ", len(valid_img_list2))
 valid_txt_list2 = glob(os.path.join("../../../data/cross/dataset2/valid/labels", "*.txt"))
 print("valid txt2: ", len(valid_txt_list2))
 
+os.chdir('../../../for_test/yolov5')
 os.system('pip install -U -r requirements.txt')
 
 import torch
-os.chdir('../../../yolov5')
 print('torch %s %s' % (torch.__version__, torch.cuda.get_device_properties(0) if torch.cuda.is_available() else 'CPU'))
 os.system('python train.py --img 640 --batch 16 --epochs 30 --data cross_data.yaml --weights yolov5s.pt --cache')

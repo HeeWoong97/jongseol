@@ -3,7 +3,7 @@ from glob import glob
 import json
 from tqdm import tqdm
 
-data_path = "../../../data/car_pedestrain/dataset"
+data_path = "../../../data/car_pedestrian/dataset"
 img_list = glob(os.path.join(data_path, "valid", "images", "*.png"))
 file_list = []
 print(len(img_list))
