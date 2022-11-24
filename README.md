@@ -1,4 +1,4 @@
-# 2022 종합설계
+# TRIP(Turn Right If Possible)
 ## 팀원
 * 20161166 양희웅
 * 20181320 송지우
@@ -35,8 +35,15 @@
 ***
 ## 코드의 구조
 * code/
+    * original/
+        * 참고한 코드가 위치
+        * cross.py
+            * 빵형의 개발도상국 '세계최초? 교차로 우회전 위반 적발하는 인공지능'으로부터 참조
+            * https://github.com/kairess/crosswalk-traffic-light-detection-yolov5
+        * yolov5
+            * TRIP이 사용한 오픈소스 물체인식 라이브러리
     * final/
-    * 구현한 코드가 위치
+        * 구현한 코드가 위치
         * **TRIP.py**
             * 메인 알고리즘 코드
             * **prediction 관련 주요코드**
