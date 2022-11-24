@@ -1,0 +1,12 @@
+# bbang-hyeong
+crosswalk-traffic-light-detection-yolov5-master/
+
+# dataset
+# it's size is too big ;(
+data/
+
+# output video
+# it's size is too big ;(
+test-video/
+
+submit/
